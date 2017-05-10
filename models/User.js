@@ -32,4 +32,9 @@ UserSchema.methods.setPassword = (password) => {
     this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
+UserSchema.methods.validPassword = (password) => {
+    const hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+    return this.hash === hash;
+};
+
 mongoose.model('User', UserSchema);
