@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const crypto = require('crypto');
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -25,5 +26,10 @@ const UserSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
+
+UserSchema.methods.setPassword = (password) => {
+    this.salt = crypto.randomBytes(16).toString('hex');
+    this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
+};
 
 mongoose.model('User', UserSchema);
