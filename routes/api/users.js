@@ -48,4 +48,34 @@ router.get('/user', auth.required, (req, res, next) => {
     }).catch(next);
 });
 
+router.put('/user', auth.required, (req, res, next) => {
+    User.findById(req.payload.id).then(user => {
+        if (!user) {return res.sendStatus(401);}
+
+        if (typeof req.body.user.username !== 'undefined') {
+            user.username = req.body.user.username;
+        }
+
+        if (typeof req.body.user.email !== 'undefined') {
+            user.email = req.body.user.email;
+        }
+
+        if (typeof req.body.user.bio !== 'undefined') {
+            user.bio = req.body.user.bio;
+        }
+
+        if (typeof req.body.user.image !== 'undefined') {
+            user.image = req.body.user.image;
+        }
+
+        if (typeof req.body.user.password !== 'undefined') {
+            user.setPassword(req.body.user.password);
+        }
+
+        return user.save().then(() => {
+            return res.json({user: user.toAuthJSON()});
+        });
+    }).catch(ext);
+});
+
 module.exports = router;
