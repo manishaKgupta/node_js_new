@@ -59,7 +59,7 @@ UserSchema.methods.toAuthJSON = () => {
     };
 };
 
-UserSchema.methods.toProfileJSONFor = () => {
+UserSchema.methods.toProfileJSONFor = (user) => {
     return {
         username: this.username,
         bio: this.bio,
