@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
-const User = mongoose.models('User');
+const User = mongoose.model('User');
 const auth = require('../auth');
 
 router.param('username', (req, res, next, username) => {
