@@ -75,7 +75,7 @@ router.put('/user', auth.required, (req, res, next) => {
         return user.save().then(() => {
             return res.json({user: user.toAuthJSON()});
         });
-    }).catch(ext);
+    }).catch(next);
 });
 
 module.exports = router;
