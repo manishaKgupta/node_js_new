@@ -31,4 +31,10 @@ ArticleSchema.methods.slugify = function () {
     this.slug = slug(this.title) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36);
 };
 
+ArticleSchema.pre('validate', function (next) {
+    this.slugify();
+
+    next();
+});
+
 mongoose.model('Article', ArticleSchema);
