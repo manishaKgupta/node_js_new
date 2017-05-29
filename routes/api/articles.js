@@ -38,4 +38,15 @@ router.post('/', auth.required, (req, res, next) => {
     }).catch(next);
 });
 
+router.get('/:article', auth.optional, (req, res, next) => {
+    Promise.all([
+        req.payload ? User.findById(req.payload.id) : null,
+        req.article.populate('author').execPopulate()
+    ]).then(results => {
+        const user = results[0];
+
+        return res.json({article: req.article.toJSONFor(user)});
+    }).catch(next);
+});
+
 module.exports = router;
