@@ -7,6 +7,21 @@ const Article = mongoose.model('Article');
 const User = mongoose.model('User');
 const auth = require('../auth');
 
+router.param(':article', (req, res, next, slug) => {
+    Article.findOne({slug: slug})
+        .populate('author')
+        .then(article => {
+            if (!article) {
+                return res.sendStatus(404);
+            }
+
+            req.article = article;
+
+            return next();
+        })
+        .catch(next);
+});
+
 router.post('/', auth.required, (req, res, next) => {
     User.findById(req.payload.id).then(user => {
         if (!user) {
