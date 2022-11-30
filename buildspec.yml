@@ -1,0 +1,24 @@
+version: 0.2
+
+run-as: root
+
+
+phases:
+   pre_build:
+     commands:
+       - sudo apt update && sudo apt upgrade -y
+       - sudo curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+       - sudo apt install nodejs nginx -y
+       - sudo npm install npm@latest -g
+       - sudo npm install pm2@latest -g
+       - echo "manisha-mongodb-url=$manisha-mongodb-url" > .env
+
+   build:
+     commands:
+        - echo "build application"
+       
+
+artifacts:
+  files:
+    - echo "Upload artifact to bucket for deploy"
+    - '**/*'
